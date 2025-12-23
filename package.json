@@ -1,0 +1,34 @@
+{
+	"name": "@openaction/svelte-pi",
+	"version": "1.0.0",
+	"license": "MIT",
+	"author": "nekename",
+	"description": "A Svelte library for ergonomically and concisely creating Property Inspectors for the OpenAction API",
+	"repository": "https://github.com/OpenActionAPI/svelte-pi",
+	"private": false,
+	"type": "module",
+	"files": [
+		"dist"
+	],
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		}
+	},
+	"peerDependencies": {
+		"svelte": "^5"
+	},
+	"devDependencies": {
+		"svelte": "^5",
+		"typescript": "^5.9",
+		"prettier": "^3.7"
+	},
+	"scripts": {
+		"build": "tsc",
+		"format": "prettier --write ."
+	},
+	"prettier": {
+		"useTabs": true
+	}
+}

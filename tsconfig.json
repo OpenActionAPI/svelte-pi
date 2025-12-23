@@ -1,0 +1,28 @@
+{
+	"compilerOptions": {
+		/* Output */
+		"outDir": "dist",
+		"declaration": true,
+		"declarationMap": true,
+		"emitDeclarationOnly": false,
+		"sourceMap": true,
+
+		/* Language */
+		"target": "es2020",
+		"module": "esnext",
+		"moduleResolution": "bundler",
+
+		/* Strictness */
+		"strict": true,
+		"noImplicitOverride": true,
+		"noUncheckedIndexedAccess": true,
+
+		/* Interop */
+		"verbatimModuleSyntax": true,
+		"isolatedModules": true,
+
+		/* DX */
+		"skipLibCheck": true
+	},
+	"include": ["**/*.ts"]
+}
