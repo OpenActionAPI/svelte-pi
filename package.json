@@ -1,6 +1,6 @@
 {
 	"name": "@openaction/svelte-pi",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"license": "MIT",
 	"author": "nekename",
 	"description": "A Svelte library for ergonomically and concisely creating Property Inspectors for the OpenAction API",
