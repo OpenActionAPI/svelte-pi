@@ -49,18 +49,35 @@ if (globalThis.connectOpenActionSocketData) {
 	const actionData = JSON.parse(actionInfo);
 	action = actionData.action;
 	context = actionData.context;
+	actionSettings.set(actionData.payload.settings ?? {});
 
 	let actionSettingsSubscribed = false,
-		globalSettingsSubscribed = false;
-	actionSettings.set(actionData.payload.settings ?? {});
+		globalSettingsSubscribed = false,
+		actionSettingsFromServer = false,
+		globalSettingsFromServer = false;
 	actionSettings.subscribe((settings) => {
 		if (!actionSettingsSubscribed) {
 			actionSettingsSubscribed = true;
 			return;
 		}
+		if (actionSettingsFromServer) return;
 		ws.send(
 			JSON.stringify({
 				event: "setSettings",
+				context,
+				payload: settings,
+			}),
+		);
+	});
+	globalSettings.subscribe((settings) => {
+		if (!globalSettingsSubscribed) {
+			globalSettingsSubscribed = true;
+			return;
+		}
+		if (globalSettingsFromServer) return;
+		ws.send(
+			JSON.stringify({
+				event: "setGlobalSettings",
 				context,
 				payload: settings,
 			}),
@@ -86,25 +103,13 @@ if (globalThis.connectOpenActionSocketData) {
 	ws.onmessage = (event) => {
 		const json = JSON.parse(event.data);
 		if (json.event == "didReceiveSettings") {
-			const settings = json.payload.settings;
-			if (settings != get(actionSettings)) actionSettings.set(settings);
+			actionSettingsFromServer = true;
+			actionSettings.set(json.payload.settings);
+			actionSettingsFromServer = false;
 		} else if (json.event == "didReceiveGlobalSettings") {
-			const settings = json.payload.settings;
-			if (settings != get(globalSettings)) globalSettings.set(settings);
-
-			globalSettings.subscribe((settings) => {
-				if (!globalSettingsSubscribed) {
-					globalSettingsSubscribed = true;
-					return;
-				}
-				ws.send(
-					JSON.stringify({
-						event: "setGlobalSettings",
-						context,
-						payload: settings,
-					}),
-				);
-			});
+			globalSettingsFromServer = true;
+			globalSettings.set(json.payload.settings);
+			globalSettingsFromServer = false;
 		}
 		eventTarget.dispatchEvent(new CustomEvent(json.event, { detail: json }));
 	};
