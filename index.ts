@@ -1,4 +1,4 @@
-import { writable, get } from "svelte/store";
+import { writable, readonly } from "svelte/store";
 
 export const actionSettings = writable<any>({});
 export const globalSettings = writable<any>({});
@@ -6,6 +6,9 @@ export const globalSettings = writable<any>({});
 export const eventTarget = new EventTarget();
 
 let ws: WebSocket, action: string, context: string;
+
+const actionInfoStore = writable<any | undefined>(undefined);
+export const actionInfo = readonly(actionInfoStore);
 
 export function sendToPlugin(payload: any) {
 	if (ws?.readyState == WebSocket.OPEN) {
@@ -47,6 +50,7 @@ if (globalThis.connectOpenActionSocketData) {
 	ws = new WebSocket("ws://localhost:" + port);
 
 	const actionData = JSON.parse(actionInfo);
+	actionInfoStore.set(actionData);
 	action = actionData.action;
 	context = actionData.context;
 	actionSettings.set(actionData.payload.settings ?? {});
