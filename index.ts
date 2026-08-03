@@ -52,7 +52,7 @@ if (globalThis.connectOpenActionSocketData) {
 	const actionData = JSON.parse(actionInfo);
 	actionInfoStore.set(actionData);
 	action = actionData.action;
-	context = actionData.context;
+	context = propertyInspectorUUID;
 	actionSettings.set(actionData.payload.settings ?? {});
 
 	let actionSettingsSubscribed = false,
