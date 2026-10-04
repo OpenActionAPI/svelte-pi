@@ -47,7 +47,7 @@ if (globalThis.connectOpenActionSocketData) {
 	const [port, propertyInspectorUUID, registerEvent, _info, actionInfo] =
 		// @ts-expect-error
 		await globalThis.connectOpenActionSocketData;
-	ws = new WebSocket("ws://localhost:" + port);
+	ws = new WebSocket("ws://127.0.0.1:" + port);
 
 	const actionData = JSON.parse(actionInfo);
 	actionInfoStore.set(actionData);
